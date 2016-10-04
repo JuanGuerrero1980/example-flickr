@@ -14,6 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONObject;
 
 import jg.flickr.R;
+import jg.flickr.http.HttpFlickrRequest;
 import jg.flickr.http.HttpResponseListener;
 import jg.flickr.http.VolleySingleton;
 import jg.flickr.utils.Constants;
@@ -32,42 +33,19 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "getFromServer.");
         final HttpResponseListener listener = new HttpResponseListener() {
             @Override
-            public void success() {
+            public void success(Object object) {
 
             }
 
             @Override
-            public void error() {
+            public void error(Object object) {
 
             }
         };
-        JsonObjectRequest myRequest = new JsonObjectRequest(Request.Method.GET, Constants.GET_URL + Constants.F_PHOTOS_GETRECENT
-                + "&per_page=1&nojsoncallback=1&format=json&api_key=" + Constants.API_KEY,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        processResponse(response);
-                        if(listener!=null){
-                            listener.success();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if(listener!=null){
-                            listener.error();
-                        }
-                        Log.d(TAG, "ErrorResponse: "+error.getMessage());
-                    }
-                }
-        );
-        // necesite poner un timeout alto porque el servidor no me respondia a tiempo y la llamada se iba por timeouterror
-        myRequest.setRetryPolicy(new DefaultRetryPolicy(Constants.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getInstance(MainActivity.this).addToRequestQueue(myRequest);
+
+        HttpFlickrRequest request = new HttpFlickrRequest(listener, MainActivity.this);
+        request.getRecent(1);
     }
 
-    private void processResponse(JSONObject response) {
-        Log.i(TAG,response.toString());
-    }
+
 }
