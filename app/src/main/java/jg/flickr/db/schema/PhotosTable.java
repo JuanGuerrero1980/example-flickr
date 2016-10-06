@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public class PhotosTable {
 
-    public static final String TABLE_NAME = "measures";
+    public static final String TABLE_NAME = "photos";
 
     public static final String COL__ID = "_id";
     public static final String COL_ID = "id";

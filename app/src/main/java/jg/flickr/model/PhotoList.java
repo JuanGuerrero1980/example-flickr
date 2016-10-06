@@ -17,7 +17,7 @@ public class PhotoList {
     private int pages;
     private int perPage;
     private int total;
-    private Collection<Photo> photos = new ArrayList<Photo>();
+    private ArrayList<Photo> photos = new ArrayList<Photo>();
 
     public PhotoList(){
 
@@ -58,11 +58,11 @@ public class PhotoList {
         this.total = total;
     }
 
-    public Collection<Photo> getPhotos() {
+    public ArrayList<Photo> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(Collection<Photo> photos) {
+    public void setPhotos(ArrayList<Photo> photos) {
         this.photos = photos;
     }
 

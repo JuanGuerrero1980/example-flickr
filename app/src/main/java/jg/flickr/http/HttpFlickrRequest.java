@@ -13,8 +13,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import jg.flickr.db.helper.PhotosHelper;
 import jg.flickr.model.Photo;
 import jg.flickr.model.PhotoList;
+import jg.flickr.ui.MainActivity;
 import jg.flickr.utils.Constants;
 
 import static android.R.attr.id;
@@ -35,13 +37,14 @@ public class HttpFlickrRequest {
         this.context = context;
     }
 
-    public void getRecent(int page){
+    public void getRecent(final int page){
         JsonObjectRequest myRequest = new JsonObjectRequest(Request.Method.GET, Constants.GET_URL + Constants.F_PHOTOS_GETRECENT
-                + "&per_page=10&per_page=" + page,
+                + "&per_page=10&page=" + page,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+
                             processResponseRecent(response);
                             if(httpResponseListener!=null){
                                 httpResponseListener.success(null);
@@ -89,8 +92,13 @@ public class HttpFlickrRequest {
     /// process request
 
     private void processResponseRecent(JSONObject response) throws JSONException {
+
         PhotoList list = new PhotoList();
         list.parseJson(response);
+        if(list.getPage()==1){
+            PhotosHelper.getHelper(context).restart(true);
+        }
+        PhotosHelper.getHelper(context).insertList(list.getPhotos());
         Log.i(TAG,response.toString());
     }
 }

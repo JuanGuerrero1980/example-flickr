@@ -1,7 +1,11 @@
 package jg.flickr.model;
 
+import android.content.ContentValues;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import jg.flickr.db.schema.PhotosTable;
 
 /**
  * Created by Juan on 9/28/2016.
@@ -194,5 +198,19 @@ public class Photo {
             set_friend(photo.getInt("isfriend")==1?true:false);
             set_family(photo.getInt("isfamily")==1?true:false);
         }
+    }
+
+    public ContentValues getContentValues(){
+        ContentValues values = new ContentValues();
+        values.put(PhotosTable.COL_ID, this.get_id());
+        values.put(PhotosTable.COL_FARM, this.getFarm());
+        values.put(PhotosTable.COL_IS_FAMILY, this.is_family()?1:0);
+        values.put(PhotosTable.COL_IS_FRIEND, this.is_friend()?1:0);
+        values.put(PhotosTable.COL_IS_PUBLIC, this.is_public()?1:0);
+        values.put(PhotosTable.COL_OWNER, this.getOwner());
+        values.put(PhotosTable.COL_SECRET, this.getSecret());
+        values.put(PhotosTable.COL_SERVER, this.getServer());
+        values.put(PhotosTable.COL_TITLE, this.getTitle());
+        return values;
     }
 }
