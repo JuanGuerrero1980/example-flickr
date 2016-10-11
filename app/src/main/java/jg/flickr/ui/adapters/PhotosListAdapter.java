@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
 
 import jg.flickr.R;
 import jg.flickr.db.schema.PhotosTable;
@@ -32,12 +34,12 @@ public class PhotosListAdapter extends RecyclerView.Adapter<PhotosListAdapter.Ph
 
     public static class PhotoViewHolder extends RecyclerView.ViewHolder {
 
-        public NetworkImageView image;
+        public ImageView image;
         public TextView text;
 
         public PhotoViewHolder(View v) {
             super(v);
-            image = (NetworkImageView) v.findViewById(R.id.photo_image_list);
+            image = (ImageView) v.findViewById(R.id.photo_image_list);
 
         }
     }
@@ -74,7 +76,14 @@ public class PhotosListAdapter extends RecyclerView.Adapter<PhotosListAdapter.Ph
 
         String photoUrl = "http://farm"+ farm +".staticflickr.com/"+ server +"/"+ id +"_"+ secret +"_m.jpg";
         String url = String.format( photoUrl,  farm, server, id, secret, "m");
-        viewHolder.image.setImageUrl(photoUrl, VolleySingleton.getInstance(context).getImageLoader());
+        //viewHolder.image.setImageUrl(photoUrl, VolleySingleton.getInstance(context).getImageLoader());
+        Glide
+                .with(context)
+                .load(url)
+                .centerCrop()
+                .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                .crossFade()
+                .into(viewHolder.image);
         setAnimation(viewHolder.image, i);
 
 

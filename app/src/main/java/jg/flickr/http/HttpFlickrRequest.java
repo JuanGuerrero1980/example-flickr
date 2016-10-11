@@ -76,8 +76,38 @@ public class HttpFlickrRequest {
 
     }
 
-    public void search(String text){
+    public void search(String text, int page){
+        JsonObjectRequest myRequest = new JsonObjectRequest(Request.Method.GET, Constants.GET_URL + Constants.F_PHOTOS_SEARCH
+                + "&per_page=10&page=" + page + "&text=" + text,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            processResponseRecent(response);
+                            if(httpResponseListener!=null){
+                                httpResponseListener.success(null);
+                            }
+                        } catch (JSONException e) {
+                            if(httpResponseListener!=null)
+                                httpResponseListener.error(null);
+                            e.printStackTrace();
+                        }
 
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if(httpResponseListener!=null){
+                            httpResponseListener.error(null);
+                        }
+                        Log.d(TAG, "ErrorResponse: "+error.getMessage());
+                    }
+                }
+        );
+
+        myRequest.setRetryPolicy(new DefaultRetryPolicy(Constants.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(context).addToRequestQueue(myRequest);
     }
 
     public void getSize(String id){

@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/photo_image_list"
         android:layout_width="match_parent"
 
         android:layout_height="200dp"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:src="@mipmap/ic_launcher" />
 </LinearLayout>
