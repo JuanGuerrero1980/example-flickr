@@ -40,7 +40,7 @@ public class PhotosListAdapter extends RecyclerView.Adapter<PhotosListAdapter.Ph
         public PhotoViewHolder(View v) {
             super(v);
             image = (ImageView) v.findViewById(R.id.photo_image_list);
-
+            text = (TextView) v.findViewById(R.id.text);
         }
     }
 
@@ -65,13 +65,13 @@ public class PhotosListAdapter extends RecyclerView.Adapter<PhotosListAdapter.Ph
     public void onBindViewHolder(PhotoViewHolder viewHolder, int i) {
         cursor.moveToPosition(i);
 
-
+        String title = cursor.getString(cursor.getColumnIndex(PhotosTable.COL_TITLE));
         String farm = cursor.getString(cursor.getColumnIndex(PhotosTable.COL_FARM));
         String server= cursor.getString(cursor.getColumnIndex(PhotosTable.COL_SERVER));
         String secret= cursor.getString(cursor.getColumnIndex(PhotosTable.COL_SECRET));
         String id= cursor.getString(cursor.getColumnIndex(PhotosTable.COL_ID));
 
-
+        viewHolder.text.setText(title);
         String [] argus = {farm, server, id, secret, "m"};
 
         String photoUrl = "http://farm"+ farm +".staticflickr.com/"+ server +"/"+ id +"_"+ secret +"_m.jpg";
